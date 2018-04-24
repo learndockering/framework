@@ -1,0 +1,8 @@
+dependencies {
+    compile project(":lemon-common")
+    compile("org.springframework.boot:spring-boot-starter-cache")
+    compile("org.springframework.boot:spring-boot-starter-data-redis")
+    compile("org.ehcache:ehcache")
+    compile("javax.cache:cache-api")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+}

@@ -1,0 +1,141 @@
+buildscript {
+    repositories {
+      //maven { url "http://nexus.geeksfin.com:1980/repository/maven-public/" }
+      //maven { url "http://127.0.0.1:8081/repository/maven-public/" }
+        maven { url "http://59.110.38.15:8081/nexus/content/groups/public/" }
+    }
+    ext {
+        springBootVersion = '1.5.3.RELEASE'
+        springCloudVersion = 'Dalston.SR1'
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:1.0.1.RELEASE")
+    }
+}
+
+subprojects{
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'maven'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven-publish'
+
+    version = '1.0.1-SNAPSHOT'
+    group = 'com.hisun'
+    
+    sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+    
+    bootRepackage {
+        enabled = false
+        //mainClass=
+    }
+    
+    repositories {
+        maven { url "http://59.110.38.15:8081/nexus/content/groups/public/" }
+        //maven { url "http://127.0.0.1:8081/repository/maven-public/" }
+    }
+
+    dependencyManagement {
+	    imports {
+	    		mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Dalston.SR1'
+	  	}
+	    dependencies {
+	          dependency 'org.apache.commons:commons-lang3:3.4'
+	          dependency 'commons-beanutils:commons-beanutils:1.9.3'
+	          dependency 'commons-io:commons-io:2.5'
+	          dependency 'commons-codec:commons-codec:1.10'
+	          dependency 'io.springfox:springfox-swagger-ui:2.7.0'
+	          dependency 'io.springfox:springfox-swagger2:2.7.0'
+	          dependency 'io.swagger:swagger-annotations:1.5.13'
+	          dependency 'mysql:mysql-connector-java:6.0.6'
+	          dependency 'com.alibaba:druid:1.0.20'
+	          dependency 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.0'
+	          dependency 'org.mybatis:mybatis-typehandlers-jsr310:1.0.2'
+	          dependency 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.9'
+	          dependency 'com.github.pagehelper:pagehelper-spring-boot-starter:1.1.2'
+	          dependency 'org.ehcache:ehcache:3.3.1'
+	          dependency 'org.redisson:redisson:3.4.4'
+	          dependency 'org.springframework.session:spring-session:1.3.1.RELEASE'
+	          dependency 'org.apache.httpcomponents:httpclient:4.5.1'  //must match feign http client
+	     }
+    }
+    
+    dependencies {
+	    //compile("org.springframework.boot:spring-boot-starter")
+	    testCompile("org.springframework.boot:spring-boot-starter-test")
+	   // testCompile "junit:junit:4.12"
+	}
+
+    //打包源代码
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    
+    //jar {
+    //    from('src/main/resources') {
+    //        include '**/*.*'
+    //    }
+    //}
+    
+    configurations {
+        optional
+        compile.extendsFrom optional
+    }
+    
+    publishing {
+        publications {
+            maven( MavenPublication ) {
+                from components.java
+                pom.withXml {
+                    asNode().dependencies.dependency.findAll { xmlDep ->
+                        // mark optional dependencies
+                        if ( project.configurations.optional.allDependencies.findAll { dep ->
+                            xmlDep.groupId.text() == dep.group && xmlDep.artifactId.text() == dep.name
+                        } ) {
+                            def xmlOptional = xmlDep.optional[ 0 ];
+                            if ( !xmlOptional ) {
+                                xmlOptional = xmlDep.appendNode( 'optional' )
+                            }
+                            xmlOptional.value = 'true';
+                        }
+                        // fix maven-publish issue when all maven dependencies are placed into runtime scope
+                        if ( project.configurations.compile.allDependencies.findAll { dep ->
+                            xmlDep.groupId.text() == dep.group && xmlDep.artifactId.text() == dep.name
+                        } ) {
+                            def xmlScope = xmlDep.scope[ 0 ];
+                            if ( !xmlScope ) {
+                                xmlScope = xmlDep.appendNode( 'scope' )
+                            }
+                            xmlScope.value = 'compile';
+                        }
+                    }
+                }
+            }
+        }
+    }
+   
+    artifacts {
+        archives jar
+        archives sourcesJar
+    }
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                snapshotRepository(url: "http://59.110.38.15:8081/nexus/content/repositories/snapshots/") {
+                //snapshotRepository(url: "http://127.0.0.1:8081/repository/maven-snapshots/") {
+                    authentication(userName:'admin', password:'admin123')
+                }
+                repository(url: "http://59.110.38.15:8081/nexus/content/repositories/releases/") {
+                //repository(url: "http://127.0.0.1:8081/repository/maven-releases/") {
+                    authentication(userName:'admin', password:'admin123')
+                }
+            }
+        }
+    }
+}
+
+description = 'seatel pay'

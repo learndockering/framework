@@ -1,0 +1,2 @@
+Ready to run Lemon Server with command: 
+/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/bin/java  -Xms512m -Xmx512m -XX:AutoBoxCacheMax=10000 -XX:+PrintCommandLineFlags -Xverify:none -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -verbose:gc -Xloggc:/Users/yuzhou/Documents/workspace/studyworkspace/lemon/lemon-eureka-server/logs/server-gc.log -XX:+PrintGCDateStamps -XX:+PrintGCDetails  -jar  --spring.profiles.active=DEV

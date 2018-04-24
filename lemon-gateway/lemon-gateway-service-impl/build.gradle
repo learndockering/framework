@@ -1,0 +1,24 @@
+dependencies {
+    compile project(":lemon-framework:lemon-framework-cache")
+    compile project(":lemon-framework:lemon-framework-rabbitmq")
+    compile project(":lemon-gateway:lemon-gateway-service")
+    compile project(":lemon-gateway:lemon-gateway-dto")
+    compile project(":lemon-gateway:lemon-gateway-security")
+//    compile("com.hisun:urm-interface:1.0.0-SNAPSHOT") {
+//        transitive = false
+//    }
+//    compile("com.hisun:cmm-interface:1.0.0-SNAPSHOT") {
+//        transitive = false
+//    }
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+               //    "Class-Path": '. config/'
+                  )
+    }
+    exclude('config/')
+}

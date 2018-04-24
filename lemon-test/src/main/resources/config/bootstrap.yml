@@ -1,0 +1,23 @@
+spring :
+  application :
+    name : TST
+    
+server :
+  port : 8888
+  
+eureka :
+  client :
+    serviceUrl :
+      defaultZone : ${eureka.zone}
+    registerWithEureka : ${registerWithEureka:true}
+  instance :
+    preferIpAddress : true
+    
+endpoints :
+  shutdown :
+    enabled : true
+    sensitive : false
+    
+#logging configuration
+logging :
+  config : classpath:config/logback-spring.xml

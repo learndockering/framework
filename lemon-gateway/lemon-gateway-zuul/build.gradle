@@ -1,0 +1,19 @@
+dependencies {
+    compile project(":lemon-common")
+    compile project(":lemon-gateway:lemon-gateway-common")
+    compile project(":lemon-gateway:lemon-gateway-service")
+    compile project(":lemon-gateway:lemon-gateway-security")
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
+    compile("org.springframework.cloud:spring-cloud-starter-zuul")
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+               //    "Class-Path": '. config/'
+                  )
+    }
+    exclude('config/')
+}

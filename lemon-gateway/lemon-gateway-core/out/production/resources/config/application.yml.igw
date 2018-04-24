@@ -1,0 +1,22 @@
+zuul :
+  #close the global hytrix retry
+  retryable : false
+  host :
+    maxTotalConnections : 1000
+    maxPerRouteConnections : 30
+  ignoredServices: '*'
+  #ignoredHeaders : 
+  #ignored-patterns :
+  stripPrefix : false
+  routes:
+    #服务名：建议 实例名+"-"+功能名
+    urm-openUser :
+      path : /urm/users/
+      serviceId : urm
+      authenticated : false
+      signatured : false
+    urm-login :
+      path : /urm/authentication/login
+      serviceId : urm
+      authenticated : false
+      signatured : false

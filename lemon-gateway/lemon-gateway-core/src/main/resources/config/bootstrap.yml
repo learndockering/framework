@@ -1,0 +1,174 @@
+server :
+  port : 9200
+  
+spring :
+  application :
+    name : AGW
+  session:
+    store-type: redis
+  redis :
+    database : 0
+    host : 219.135.153.39
+    #host : 127.0.0.1
+    port : 6379
+    password : Hisunpay2017
+    pool : 
+      #连接池最大连接数（使用负值表示没有限制）
+      max-active : 8
+      #连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait : 10000
+      # 连接池中的最大空闲连接
+      max-idle : 8
+      # 连接池中的最小空闲连接
+      min-idle : 1
+    #连接超时时间（毫秒）
+    timeout : 10000
+    #默认缓存过期时间(秒)
+    default-expiration : 600
+  messages :
+    basename : i18n/messages
+    #设定加载的资源文件缓存失效时间，-1的话为永不过期，默认为-1,单位 s
+    cache-seconds : 10
+    encoding : UTF-8
+  http :
+    encoding :
+      force : true
+      charset : UTF-8
+      enabled : true
+  jackson :
+    serialization : 
+      write_dates_as_timestamps : false
+  cache :
+    jcache :
+      config : classpath:config/ehcache3.xml
+      provider : org.ehcache.jsr107.EhcacheCachingProvider
+  #see rabbitProperties
+  rabbitmq :
+    addresses : 219.135.153.39:5672
+    virtualHost : /lemon
+    username : rabbitmq
+    password : Rabbitmq123
+    requestedHeartbeat : 10
+    publisherConfirms : true
+    publisherReturns : true
+    connectionTimeout : 10000
+    cache:
+      channel :
+        size : 5
+    listener :
+      concurrency : 1
+      maxConcurrency : 5
+      idleEventInterval : 60000
+      prefetch : 10
+      transactionSize : 10 
+  cloud :
+    stream :
+      defaultBinder : rabbit
+      bindings :
+        input :
+          destination : ${spring.application.name}
+          group : ${spring.application.name}
+          consumer :
+            enable : false
+            concurrency : 1
+            maxConcurrency : 5
+            maxAttempts : 1
+            durableSubscription : true
+            prefetch : 10
+            txSize : 10
+          producer :
+            deliveryMode : PERSISTENT
+        output :
+          enable : true
+          destination : CMM
+    
+ribbon :
+  ReadTimeout : 30000
+  ConnectTimeout : 5000
+  #retry next Server times
+  MaxAutoRetriesNextServer : 0
+  #retry same Server times
+  MaxAutoRetries : 0
+  MaxTotalConnections : 300
+  MaxConnectionsPerHost : 20
+# hystrix command timeout must be large than ribbon readTimeout and connectTimeout
+hystrix :
+  command :
+    default :
+      execution :
+        isolation :
+          thread :
+            timeoutInMilliseconds : 40000
+
+feign :
+  httpclient :
+    enabled : true
+    #max connection for http client
+    maxTotal : 300
+    #max per route connection for http client
+    maxPerRoute : 20
+    #Returns the duration of time which this connection can be safely kept idle
+    alive : 60000
+    #idle timeout for connection /ms
+    idleTimeoutMillis : 30000
+    #clear expire and idle timeout http connections schedule rate
+    closedConnectionsRate : 30000
+  # feign client validation
+  validation :
+    enabled : false
+  # feign compression support
+  compression :
+    request :
+      enabled : true
+      mime-types : application/json
+      min-request-size : 2048
+    response:
+      enabled : true
+
+logging :
+  config : classpath:config/logback-spring.xml
+  level :
+    root : DEBUG
+    
+eureka :
+  client :
+    serviceUrl :
+      defaultZone : http://219.135.153.39:9002/eureka/
+      #defaultZone : http://127.0.0.1:9002/eureka/
+    #是否注册到eureka，上传到git的时候一定要删除掉；
+    registerWithEureka : false
+  instance :
+    preferIpAddress : true
+      
+lemon :    
+  #spring scheuling configuration
+  schedule :
+    threadPool :
+      poolSize : 10
+      waitForTasksToCompleteOnShutdown : true
+      awaitTerminaltionSeconds : 30
+  idgen :
+    #每次从reids申请Id的数量
+    delta : 
+      default : 500
+      MSGID_ : 1000
+      REQUESTID_ : 1000
+    #在redis里Id key 的前缀，prefix+"."+ applicationName,申请ID key作为hash key.
+    prefix : IDGEN
+    #ID sequence 最大值，默认值无穷大，配置方式是在max-value 下配置key 及长度 
+    max-value :
+      #msgId key
+      MSGID_ : 999999999
+      REQUESTID_ : 999999999
+    #common ID sequence length
+    common-id-sequence-len : 10
+    #request ID sequence length
+    request-id-sequence-len : 10
+    #msgId sequence length
+    msg-id-sequence-len : 9
+    autogen :
+      DOPackage : com.hisun.lemon.*.entity
+  #default locale for application
+  locale :
+    defaultLocale : zh_CN
+    supportLocales : zh_CN,en_US,km_KH

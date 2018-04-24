@@ -1,0 +1,7 @@
+spring :
+  application :
+    name : eureka-server
+server :
+  port : 9002
+logging :
+  config : classpath:config/logback-spring.xml

@@ -1,0 +1,9 @@
+eureka :
+  enviroment : PRD
+  client :
+    register-with-eureka : true
+    fetch-registry : true
+    serviceUrl :
+      defaultZone : http://${eureka.server.host}:${server.port}/eureka/
+  server :
+    enable-self-preservation : true

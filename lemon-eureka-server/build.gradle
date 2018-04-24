@@ -1,0 +1,46 @@
+//apply plugin: 'application'
+
+dependencies {
+    compile project(":lemon-common")
+	compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+                  // "Class-Path": '. config/'
+                  )
+    }
+  //  exclude('config/')
+}
+
+bootRepackage {
+    enabled = true
+    mainClass = 'com.hisun.lemon.eureka.EurekaServerApplication'
+}
+
+task clearTarget(type:Delete){  
+   delete 'build/target'  
+}  
+
+task release(type: Copy,dependsOn: [clearTarget,build]) {  
+    from('build/libs') {  
+        include '*.jar'
+        exclude '*-sources.jar'  
+    }  
+//    from('src/main/resources') {
+//        include 'config/*'
+//    }
+    into ('build/target') 
+    
+    into('bin') {
+        from 'shell'
+    } 
+} 
+
+task dist(type: Zip,dependsOn: [release]) {  
+    from ('build/target/') {
+    } 
+}

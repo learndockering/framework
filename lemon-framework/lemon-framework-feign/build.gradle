@@ -1,0 +1,17 @@
+dependencies {
+    compile project(":lemon-framework:lemon-framework-common")
+    compile project(":lemon-framework:lemon-framework-idgen")
+    compile project(":lemon-framework:lemon-framework-validation")
+    compile("org.springframework.cloud:spring-cloud-starter-feign")
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+                  // "Class-Path": '. config/'
+                  )
+    }
+//    exclude('config/')
+}

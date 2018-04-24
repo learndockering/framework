@@ -1,0 +1,17 @@
+dependencies {
+    compile project(":lemon-common")
+    compile("org.mybatis.spring.boot:mybatis-spring-boot-starter")
+    compile("org.springframework.boot:spring-boot-starter-aop")
+    
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+                  // "Class-Path": '. config/'
+                  )
+    }
+//    exclude('config/')
+}

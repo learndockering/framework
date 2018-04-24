@@ -1,0 +1,28 @@
+apply plugin: 'application'
+mainClassName = 'com.hisun.lemon.GatewayApplication'
+
+dependencies {
+    compile project(":lemon-common")
+    compile project(":lemon-framework:lemon-framework-actuator")
+    compile project(":lemon-gateway:lemon-gateway-common")
+    compile project(":lemon-gateway:lemon-gateway-core")
+    compile project(":lemon-gateway:lemon-gateway-feign")
+    compile project(":lemon-gateway:lemon-gateway-security")
+    compile project(":lemon-gateway:lemon-gateway-zuul")
+    compile project(":lemon-gateway:lemon-gateway-service-impl")
+    compile( project(":lemon-session")) {
+        exclude group: 'javax.servlet', module: 'javax.servlet-api'
+    }
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+               //    "Class-Path": '. config/'
+                  )
+    }
+    exclude('config/')
+}

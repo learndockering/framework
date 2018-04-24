@@ -1,0 +1,300 @@
+spring :
+  redis :
+    database : 0
+    host : ${redis.host:192.168.3.39}
+    port : 6379
+    password : ${redis.password:Hisunpay2017}
+    pool : 
+      #连接池最大连接数（使用负值表示没有限制）
+      max-active : 8
+      #连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait : 10000
+      # 连接池中的最大空闲连接
+      max-idle : 8
+      # 连接池中的最小空闲连接
+      min-idle : 1
+    #连接超时时间（毫秒）
+    timeout : 10000
+    #默认缓存过期时间(秒)
+    default-expiration : 600
+  http :
+    encoding :
+      force : true
+      charset : UTF-8
+      enabled : true
+  mvc :
+    throw-exception-if-no-handler-found : true
+  resources :
+    #是否开启默认的资源处理，默认为true, 为false swagger不可用
+    add-mappings : true
+  messages :
+    basename : i18n/messages
+    #设定加载的资源文件缓存失效时间，-1的话为永不过期，默认为-1,单位 s
+    cache-seconds : 10
+    encoding : UTF-8
+  thymeleaf :
+    cache : false
+  jackson :
+    serialization : 
+      write_dates_as_timestamps : false
+  cache :
+    jcache :
+      config : classpath:config/ehcache3.xml
+      provider : org.ehcache.jsr107.EhcacheCachingProvider
+  #see rabbitProperties
+  rabbitmq :
+    addresses : ${rabbitmq.addresses:192.168.3.38:5672}
+    virtualHost : /lemon
+    username : rabbitmq
+    password : ${rabbitmq.password:Rabbitmq123}
+    requestedHeartbeat : 10
+    publisherConfirms : true
+    publisherReturns : true
+    connectionTimeout : 10000
+    cache:
+      channel :
+        size : 5
+    listener :
+      concurrency : 1
+      maxConcurrency : 5
+      idleEventInterval : 60000
+      prefetch : 10
+      transactionSize : 10
+  cloud :
+    stream :
+      defaultBinder : rabbit
+      bindings :
+        input :
+          destination : ${spring.application.name}
+          group : ${spring.application.name}
+          consumer :
+            #enable : true
+            concurrency : 1
+            maxConcurrency : 5
+            maxAttempts : 1
+            durableSubscription : true
+            prefetch : 10
+            txSize : 10
+          producer :
+            deliveryMode : PERSISTENT
+        #channel
+        output :
+          enable : true
+          #binder topic
+          destination : ${spring.application.name}
+          producer :
+            deliveryMode : PERSISTENT
+        output1 :
+          enable : false
+          destination : PRD
+          producer :
+            deliveryMode : PERSISTENT
+
+ribbon :
+  #retry next Server times
+  MaxAutoRetriesNextServer : 0
+  #retry same Server times
+  MaxAutoRetries : 0
+  ReadTimeout : 20000
+  ConnectTimeout : 5000
+
+feign :
+  httpclient :
+    enabled : true
+    #max connection for http client
+    maxTotal : 300
+    #max per route connection for http client
+    maxPerRoute : 20
+    #Returns the duration of time which this connection can be safely kept idle
+    alive : 60000
+    #idle timeout for connection /ms
+    idleTimeoutMillis : 30000
+    #clear expire and idle timeout http connections schedule rate
+    closedConnectionsRate : 30000
+  # feign client validation
+  validation :
+    enabled : false
+  # feign compression support
+  compression :
+    request :
+      enabled : true
+      mime-types : application/json
+      min-request-size : 2048
+    response:
+      enabled : true
+    
+#lemon framework configuration
+lemon :
+  #dynamic datasource
+  dynamicDataSource : 
+    enabled : true
+    dataSources : lemon,primary
+    defaultDataSource : primary
+  druid :
+    monitor :
+        loginUsername : druid
+        loginPassword : druid123
+  idgen :
+    #每次从reids申请Id的数量
+    delta : 
+      default : 500
+      MSGID_ : 1000
+      REQUESTID_ : 1000
+    #在redis里Id key 的前缀，prefix+"."+ applicationName,申请ID key作为hash key.
+    prefix : IDGEN
+    #ID sequence 最大值，默认值无穷大，配置方式是在max-value 下配置key 及长度 
+    max-value :
+      #msgId key
+      MSGID_ : 999999999
+      REQUESTID_ : 999999999
+      USER_ID : 999999  
+    #common ID sequence length
+    common-id-sequence-len : 10
+    #request ID sequence length
+    request-id-sequence-len : 10
+    #msgId sequence length
+    msg-id-sequence-len : 9
+    autogen :
+      DOPackage : com.hisun.lemon.*.entity
+  #default locale for application
+  locale :
+    defaultLocale : zh_cn
+    supportLocales : zh_cn,en_us
+  #spring scheuling configuration
+  schedule :
+    threadPool :
+      poolSize : 10
+      waitForTasksToCompleteOnShutdown : true
+      awaitTerminaltionSeconds : 30
+  cache :
+    cacheName :
+      prefix : CACHENAME.${spring.application.name}
+    redis :
+      expires :
+        #redis cache expire time; cacheName : expireTime/s; 0 - never expire
+        ${lemon.cache.cacheName.prefix}.user : 140 
+  # distributed lock dependence on redisson
+  redisson :
+    enabled : true
+    mode : single
+    address : ${redis.host:192.168.3.39}:6379
+    password : ${redis.password:Hisunpay2017}
+    poolSize : 30
+    idleSize : 5
+    idleTimeout : 60000
+    connectionTimeout : 10000
+    timeout : 5000
+  #redis distributed lock 
+  lock :
+    defaultLeaseTime : 100
+    defaultWaitTime : 5    
+
+#Multiple dataSources
+dataSource :
+  lemon :
+    type : com.alibaba.druid.pool.DruidDataSource
+    driverClassName : com.mysql.cj.jdbc.Driver
+    url : jdbc:mysql://119.23.126.119:3306/lemon?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+    username : lemon
+    password : lemon@123
+    initialSize : 5
+    minIdle : 5
+    maxActive : 20
+    # 配置获取连接等待超时的时间
+    maxWait : 30000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 
+    timeBetweenEvictionRunsMillis : 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒 
+    minEvictableIdleTimeMillis : 300000
+    validationQuery : SELECT 1
+    testWhileIdle : true
+    testOnBorrow : false
+    testOnReturn : false
+    # 打开PSCache，并且指定每个连接上PSCache的大小 
+    poolPreparedStatements : true
+    maxPoolPreparedStatementPerConnectionSize : 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙 
+    filters : stat,wall,log4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties : druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat : true
+  primary :
+    type : com.alibaba.druid.pool.DruidDataSource
+    driverClassName : com.mysql.cj.jdbc.Driver
+    url : jdbc:mysql://localhost:3306/seatelpay?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+    username : seatelpay
+    password : seatelpay
+    initialSize : 5
+    minIdle : 5
+    maxActive : 20
+    # 配置获取连接等待超时的时间
+    maxWait : 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 
+    timeBetweenEvictionRunsMillis : 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒 
+    minEvictableIdleTimeMillis : 300000
+    validationQuery : SELECT 1
+    testWhileIdle : true
+    testOnBorrow : false
+    testOnReturn : false
+    # 打开PSCache，并且指定每个连接上PSCache的大小 
+    poolPreparedStatements : true
+    maxPoolPreparedStatementPerConnectionSize : 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙 
+    filters : stat,wall,log4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties : druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat : true
+    
+mybatis: 
+  mapperLocations: classpath*:com/hisun/**/mapper/*.xml
+  typeAliasesPackage : com.hisun.**.entity
+ # config : mybatis-config.xml
+ # typeHandlersPackage 扫描typeHandlers的包
+ 
+#page helper
+pagehelper :
+  defaultPageNum : 1
+  defaultPageSize : 8
+  
+eureka :
+  client :
+    healthcheck :
+      enabled : true
+  
+swagger :
+  profiles : dev,sit,ci
+  show : true
+  scanPackage : com.hisun
+  version : 1.0
+  globleRequestParams :
+    x-auth-token :
+      desc : sessionId，登录交易传任意值
+      type : header
+      modelRef : String
+    x-lemon-secure :
+      desc : 密钥索引
+      type : header
+      modelRef : String
+    x-lemon-sign :
+      desc : 签名; 规则 ==>> Json -> Json + 密钥; QueryString -> queryString+密钥；Form -> 将需要签名的参数(gateway配置)的值合并成字符串+密钥； PathVariable -> path变量的值合并成字符串+密钥
+      type : header
+      modelRef : String
+    x-lemon-channel :
+      desc : 渠道； 根据密钥索引可以找到渠道，可不传
+      type : header
+      modelRef : String
+    Accept-Language :
+      desc : 语言环境
+      type : header
+      modelRef : String
+
+security :
+  basic :
+    path : /swagger-ui.html
+    enabled : true
+  user :
+    name : lemon
+    password : lemon123

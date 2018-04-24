@@ -1,0 +1,42 @@
+apply plugin: 'application'
+mainClassName = 'com.hisun.lemon.Application'
+
+dependencies {
+    compile project(":lemon-common")
+    compile project(":lemon-framework:lemon-framework-common")
+    compile project(":lemon-framework:lemon-framework-core")
+    compile project(":lemon-framework:lemon-framework-log")
+    compile project(":lemon-framework:lemon-framework-validation")
+    compile project(":lemon-framework:lemon-framework-redis")
+    compile project(":lemon-framework:lemon-framework-idgen")
+    //compile project(":lemon-framework:lemon-framework-cumulative")
+    compile project(":lemon-framework:lemon-framework-cache")
+    //compile project(":lemon-framework:lemon-framework-redisson")
+    //compile project(":lemon-framework:lemon-framework-lock")
+    compile project(":lemon-framework:lemon-framework-schedule")
+    compile project(":lemon-framework:lemon-framework-msginfo")
+    compile project(":lemon-framework:lemon-framework-feign")
+    compile project(":lemon-framework:lemon-framework-feign-httpclient")
+    compile project(":lemon-framework:lemon-framework-datasource-druid")
+    compile project(":lemon-framework:lemon-framework-datasource-dynamic")
+    compile project(":lemon-framework:lemon-framework-mybatis")
+    compile project(":lemon-framework:lemon-framework-transaction")
+    compile project(":lemon-framework:lemon-framework-rabbitmq")
+    compile project(":lemon-framework:lemon-framework-actuator")
+    compile("mysql:mysql-connector-java")
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
+    //force ribbon use netty version:4.1.13.Final, original version 4.0.27.Final
+    compile("io.netty:netty-transport-native-epoll:4.1.13.Final")   //fixed netty version for ribbon
+    compile("io.netty:netty-codec-http:4.1.13.Final")   //fixed netty version for ribbon
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+                   "Class-Path": '. config/'
+                  )
+    }
+    exclude('config/')
+}

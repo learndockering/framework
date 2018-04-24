@@ -1,0 +1,26 @@
+redis :
+  host : 219.135.153.39
+  password : Hisunpay2017
+  
+rabbitmq :
+  addresses : 219.135.153.39:5672
+  password : Rabbitmq123
+  
+dataSource :
+  lemon :
+    url : jdbc:mysql://119.23.126.119:3306/lemon?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username : lemon
+    password : lemon@123
+  primary :
+    url : jdbc:mysql://localhost:3306/seatelpay?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username : seatelpay
+    password : seatelpay
+    
+eureka :
+  //zone : http://219.135.153.39:9002/eureka/,http://192.168.3.39:9002/eureka/
+  zone : http://219.135.153.39:9002/eureka/
+  
+lemon :
+  schedule :
+    threadPool :
+      poolSize : 2

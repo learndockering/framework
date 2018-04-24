@@ -1,0 +1,630 @@
+zuul :
+  #close the global hytrix retry
+  retryable : false
+  host :
+    maxTotalConnections : 1000
+    maxPerRouteConnections : 30
+  ignoredServices: '*'
+  #ignoredHeaders :
+  #ignored-patterns :
+  sensitiveHeaders : Cookie,Set-Cookie,Authorization,x-lemon-secure,X-Forwarded-For
+  stripPrefix : false
+  routes:
+    agw-login :
+      path : /security/login
+      signaturedParameters : loginName,loginPwd
+    oauth-token :
+      path : forward:/oauth/token
+      authenticated : false
+      signatured : false
+    urm-random :
+      path : /urm/random
+      serviceId : urm
+      authenticated : false
+      signatured : false
+    #服务名：建议 实例名+"-"+功能名
+    tst-addUser :
+      #api gateway请求路径
+      path : /user/addUser
+      #服务ID
+      serviceId : tst
+    tst-findUser2:
+      path : /user/findUser2
+      serviceId : tst
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : false
+    tst-findUser3:
+      path : /user/findUser3
+      serviceId : tst
+    tst-findUser4:
+      path : /user/findUser4
+      serviceId : tst
+      signatured : true
+    tst-random:
+      path : /test/testRandomTemplete
+      serviceId : tst
+      signatured : false
+    csm-addUser :
+      path : /csm/addUser
+      serviceId : csm
+    #  strip-prefix : false
+    mkm-get :
+      #api gateway请求路径
+      path : /mkmTool/get
+      #服务ID
+      serviceId : mkm
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : true
+    mkm-query :
+      #api gateway请求路径
+      path : /mkmTool/query
+      #服务ID
+      serviceId : mkm
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : true
+    mkm-getConpon :
+      #api gateway请求路径
+      path : /mkmTool/getConpon
+      #服务ID
+      serviceId : mkm
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : true
+    mkm-consumeSeaCcy :
+      #api gateway请求路径
+      path : /mkmTool/consumeSeaCcy
+      #服务ID
+      serviceId : mkm
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : false
+    mkm-consumeCoupon :
+      #api gateway请求路径
+      path : /mkmTool/consumeCoupon
+      #服务ID
+      serviceId : mkm
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : false
+
+    mkm-revoconsume :
+      #api gateway请求路径
+      path : /mkmTool/revoconsume
+      #服务ID
+      serviceId : mkm
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : false
+
+
+    mkm-queryUserMkmTool :
+      #api gateway请求路径
+      path : /mkmTool/queryUserMkmTool
+      #服务ID
+      serviceId : mkm
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : false
+
+    csh-initOrder :
+      #api gateway请求路径
+      path : /csh/order/cashier
+      #服务ID
+      serviceId : csh
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    csh-balPayment :
+      #api gateway请求路径
+      path : /csh/order/bal
+      #服务ID
+      serviceId : csh
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    csh-ppPayment :
+      #api gateway请求路径
+      path : /csh/order/pp
+      #服务ID
+      serviceId : csh
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    csh-qpPayment :
+      #api gateway请求路径
+      path : /csh/order/qp
+      #服务ID
+      serviceId : csh
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+
+    csh-offlinePayment :
+      #api gateway请求路径
+      path : /csh/order/offline
+      #服务ID
+      serviceId : csh
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    csh-bsPayment :
+      #api gateway请求路径
+      path : /csh/order/backstage
+      #服务ID
+      serviceId : csh
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    pwm-rechange :
+      #api gateway请求路径
+      path : /pwm/recharge/order
+      #服务ID
+      serviceId : pwm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    pwm-hallQuery :
+      #api gateway请求路径
+      path : /pwm/recharge/hall/info
+      #服务ID
+      serviceId : pwm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    pwm-hallApplication :
+      #api gateway请求路径
+      path : /pwm/recharge/hall/application
+      #服务ID
+      serviceId : pwm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    pwm-hallAck :
+      #api gateway请求路径
+      path : /pwm/recharge/hall/acknowledgement
+      #服务ID
+      serviceId : pwm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    pwm-rechargeHCoupon :
+      #api gateway请求路径
+      path : /pwm/recharge/order/sea
+      #服务ID
+      serviceId : pwm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    pwm-withdraw :
+      #api gateway请求路径
+      path : /pwm/withdraw/order
+      #服务ID
+      serviceId : pwm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    #服务名：建议 实例名+"-"+功能名
+    cpm-telFareOrderRegistrat :
+      #api gateway请求路径
+      path : /cpm/telfareorder/order
+      #服务ID
+      serviceId : cpm
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : false
+    #服务名：缴费模块-充流量下单
+    cpm-flowDataOrderRegistrat :
+      #api gateway请求路径
+      path : /cpm/flowdataorder/order
+      #服务ID
+      serviceId : cpm
+      #是否需要签名
+      signatrued : false
+    #服务名：缴费模块-流量列表查询
+    cpm-flowDataQueryService :
+      #api gateway请求路径
+      path : /cpm/flowdataquery/{mblNo}
+      #服务ID
+      serviceId : cpm
+      #是否需要签名
+      signatrued : false
+    #服务名：缴费模块-手机号段检查
+    cpm-mobileNoQuery :
+      #api gateway请求路径
+      path : /cpm/mobilenoquery/{mblNo}
+      #服务ID
+      serviceId : cpm
+      #是否需要签名
+      signatrued : false
+    #服务名：缴费模块-充话费退款接口
+    cpm-telFareOrderRefund :
+      #api gateway请求路径
+      path : /cpm/telfarerefund/order
+      #服务ID
+      serviceId : cpm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+    #服务名：缴费模块-充流量退款接口
+    cpm-flowDataOrderRefund :
+      #api gateway请求路径
+      path : /cpm/flowdatarefund/order
+      #服务ID
+      serviceId : cpm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+    #服务名：转账模块-查询转账账户信息接口
+    tam-userInfo:
+      #api gateway请求路径
+      path : /tam/transfer/user/{mblNo}
+      #服务ID
+      serviceId : tam
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+    #服务名：转账模块-历史转账记录接口
+    tam-historyTransferOrder:
+      #api gateway请求路径
+      path : /tam/transfer/history/order/{userId}/{pageNum}/{pageSize}
+      #服务ID
+      serviceId : tam
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+    #服务名：转账模块-转账到账户下单接口
+    tam-createUserOrder:
+      #api gateway请求路径
+      path : /tam/transfer/order/user
+      #服务ID
+      serviceId : tam
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+    #服务名：转账模块-转账到银行卡下单接口
+    tam-createCardOrder:
+      #api gateway请求路径
+      path : /tam/transfer/order/card
+      #服务ID
+      serviceId : tam
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+
+    cpo-queryCardsInfo :
+      #api gateway请求路径
+      path : /cpi/cards/userId
+      #服务ID
+      serviceId : cpi
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : true
+    cpo-queryCardBin :
+      #api gateway请求路径
+      path : /cpi/cards/head
+      #服务ID
+      serviceId : cpi
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : true
+    cpo-preBindCard :
+      #api gateway请求路径
+      path : /cpi/fastpay/pre/cards
+      #服务ID
+      serviceId : cpi
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : true
+    cpo-queryEffOrgInfo :
+      #api gateway请求路径
+      path : /cpi/fastpay/pre/orgs
+      #服务ID
+      serviceId : cpi
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : true
+    cpo-bindCard :
+      #api gateway请求路径
+      path : /cpi/fastpay/cards
+      #服务ID
+      serviceId : cpi
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : true
+    cpo-unBindCard :
+      #api gateway请求路径
+      path : /cpi/fastpay/cards
+      #服务ID
+      serviceId : cpi
+      #是否需要认证，默认为true, 如果不需要认证，请主动设置为false
+      authenticated : false
+      #是否需要签名，默认为true, 如果不需要签名，请主动设置为false
+      signatured : true
+
+    #服务名：线上收单模块-订单查询接口
+    onr-merchantOrderQuery :
+      #api gateway请求路径
+      path : /onr/merc/query/order/{orderNo}
+      #服务ID
+      serviceId : onr
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    #服务名：线上收单模块-退款接口
+    onr-merchantOrderRefund :
+      #api gateway请求路径
+      path : /onr/merc/refund/order
+      #服务ID
+      serviceId : onr
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    #服务名：线上收单模块-商户主动下单
+    onr-merc-order-order :
+      #api gateway请求路径
+      path : /onr/merc/order/order
+      #服务ID
+      serviceId : onr
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    #服务名：线上收单模块-商户下单并支付
+    onr-merc-orderpay-order :
+      #api gateway请求路径
+      path : /onr/onr/merc/orderpay/order
+      #服务ID
+      serviceId : onr
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    #服务名：线上收单模块-用户主动下单
+    onr-usr-order-order :
+      #api gateway请求路径
+      path : /onr/usr/order/order
+      #服务ID
+      serviceId : onr
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+     #服务名：线上收单模块-商户二维码生成
+    onr-merc-order-codeQR :
+      #api gateway请求路径
+      path : /onr/merc/order/codeQR
+       #服务ID
+      serviceId : onr
+       #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    #服务名：理财模块-用户理财功能开启
+    inv-configure-usr-open :
+      #api gateway请求路径
+      path : /inv/configure/usr/open
+      #服务ID
+      serviceId : inv
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    #服务名：线上收单模块-用户理财功能关闭
+    inv-configure-usr-close :
+      #api gateway请求路径
+      path : /inv/configure/usr/close
+      #服务ID
+      serviceId : inv
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    #服务名：理财模块-用户理财资金转入、转出
+    inv-usr-transfer-order :
+      #api gateway请求路径
+      path : /inv/usr/transfer/order
+      #服务ID
+      serviceId : inv
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    #服务名：理财模块-用户理财产品投资明细查询
+    inv-query-usr-probal :
+      #api gateway请求路径
+      path : /inv/query/usr/probal/{usrId}/{proId}
+      #服务ID
+      serviceId : inv
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    urm-openuser :
+      path : /urm/users
+      serviceId : urm
+      authenticated : false
+
+    urm-canceluser :
+      path : /urm/users/{userId}
+      serviceId : urm
+
+    urm-queryuser :
+      path : /urm/users/{userId}
+      serviceId : urm
+
+    urm-queryuserbyloginid :
+      path : /urm/users/loginId/{loginId}
+      serviceId : urm
+
+    urm-login :
+      path : /urm/authentication
+      serviceId : urm
+      authenticated : false
+
+    urm-updateloginpwd :
+      path : /urm/loginpwd/update
+      serviceId : urm
+
+    urm-resetloginpwd :
+      path : /urm/loginpwd/reset
+      serviceId : urm
+
+    urm-updatepaypwd :
+      path : /urm/paypwd/update
+      serviceId : urm
+
+    urm-resetpaypwd :
+      path : /urm/paypwd/reset
+      serviceId : urm
+
+    urm-updatepwdsafeinf :
+      path : /urm/pwdsafeinf/update
+      serviceId : urm
+    
+    #服务名：清分结算-结算信息查询
+    csm-settleInformation :
+      #api gateway请求路径
+      path : /csm/settle/information
+      #服务ID
+      serviceId : csm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：清分结算-结算申请
+    csm-settleaApply :
+      #api gateway请求路径
+      path : /csm/settle/apply
+      #服务ID
+      serviceId : csm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：清分结算-结算订单列表
+    csm-settleOrderList :
+      #api gateway请求路径
+      path : /csm/settle/order/list
+      #服务ID
+      serviceId : csm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：清分结算-结算订单详情
+    csm-settleOrderDetail :
+      #api gateway请求路径
+      path : /csm/settle/order/detail
+      #服务ID
+      serviceId : csm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：公共服务-短信验证码
+    cmm-smsCodeSend :
+      #api gateway请求路径
+      path : /sms/code
+      #服务ID
+      serviceId : cmm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：公共服务-付款码生成
+    cmm-paymentCodeGenerate :
+      #api gateway请求路径
+      path : /qrcode/payment
+      #服务ID
+      serviceId : cmm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：公共服务-付款码校验
+    cmm-paymentCodeCheck :
+      #api gateway请求路径
+      path : /qrcode/payment/check
+      #服务ID
+      serviceId : cmm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：公共服务-二维码生成
+    cmm-QRCodeGenerate :
+      #api gateway请求路径
+      path : /qrcode/generate
+      #服务ID
+      serviceId : cmm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：公共服务-二维码解析
+    cmm-QRCodeResolve :
+      #api gateway请求路径
+      path : /qrcode/resolve
+      #服务ID
+      serviceId : cmm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：公共服务-消息中心列表
+    cmm-messageList :
+      #api gateway请求路径
+      path : /message/list
+      #服务ID
+      serviceId : cmm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+      
+    #服务名：公共服务-消息确认
+    cmm-messageAcknowledge :
+      #api gateway请求路径
+      path : /message/acknowledge
+      #服务ID
+      serviceId : cmm
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : false
+
+    bil-queryUserBills :
+      #api gateway请求路径
+      path : /bil/user/bill/all
+      #服务ID
+      serviceId : bil
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    bil-queryBillInfo :
+      #api gateway请求路径
+      path : /bil/user/bill
+      #服务ID
+      serviceId : bil
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    bil-queryUserAccount :
+      #api gateway请求路径
+      path : /bil/user/act
+      #服务ID
+      serviceId : bil
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    bil-queryMercBills :
+      #api gateway请求路径
+      path : /bil/merc/bill/all
+      #服务ID
+      serviceId : bil
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    bil-queryMercDetails :
+      #api gateway请求路径
+      path : /bil/merc/bill
+      #服务ID
+      serviceId : bil
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true
+
+    bil-queryMercAccount :
+      #api gateway请求路径
+      path : /bil/merc/act
+      #服务ID
+      serviceId : bil
+      #是否需要认证，默认为true；如果不需要认证，请主动设置false
+      authenticated : true

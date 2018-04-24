@@ -1,0 +1,20 @@
+dependencies {
+    compile project(":lemon-framework:lemon-framework-common")
+    compile project(":lemon-framework:lemon-framework-cache")
+    compile project(":lemon-framework:lemon-framework-datasource-dynamic")
+    compile project(":lemon-framework:lemon-framework-core")
+    compile("org.mybatis.spring.boot:mybatis-spring-boot-starter")
+    compile("org.mybatis:mybatis-typehandlers-jsr310")
+    
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+                  // "Class-Path": '. config/'
+                  )
+    }
+//    exclude('config/')
+}

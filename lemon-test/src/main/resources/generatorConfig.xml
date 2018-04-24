@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE generatorConfiguration  
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+  "dtd/mybatis-generator-config_1_0.dtd">  
+<generatorConfiguration> 
+    <!-- 
+    <classPathEntry  location="mysql-connector-java-5.1.25-bin.jar"/>  
+     --> 
+    <context id="mysql"  targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <commentGenerator>  
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/seatelpay" userId="seatelpay" password="seatelpay">  
+        </jdbcConnection>  
+        <javaTypeResolver>  
+            <property name="forceBigDecimals" value="false"/>  
+        </javaTypeResolver>  
+        <javaModelGenerator targetPackage="com.hisun.lemon.prd.entity" targetProject="/Users/yuzhou/Documents/work/temp/">  
+            <property name="enableSubPackages" value="false"/>  
+            <property name="trimStrings" value="false"/>
+           	<property name="rootClass" value="com.hisun.lemon.framework.data.BaseDO"/>
+        </javaModelGenerator>  
+        <sqlMapGenerator targetPackage="com.hisun.lemon.prd.mapper" targetProject="/Users/yuzhou/Documents/work/temp/">  
+            <property name="enableSubPackages" value="false"/>  
+        </sqlMapGenerator>  
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.hisun.lemon.prd.dao" targetProject="/Users/yuzhou/Documents/work/temp/">
+            <property name="enableSubPackages" value="false"/>  
+        </javaClientGenerator>
+        
+        <table tableName="USER" domainObjectName="UserDO" enableCountByExample="false" enableUpdateByExample="false" 
+            enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <columnOverride column="CREATE_TIME" javaType="java.time.LocalDateTime" jdbcType="DATETIME" />
+            <columnOverride column="MODIFY_TIME" javaType="java.time.LocalDateTime" jdbcType="DATETIME" />
+        </table>
+    </context>  
+</generatorConfiguration>  

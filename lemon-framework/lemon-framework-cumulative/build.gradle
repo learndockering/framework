@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":lemon-framework:lemon-framework-common")
+    compile project(":lemon-framework:lemon-framework-redis")
+}

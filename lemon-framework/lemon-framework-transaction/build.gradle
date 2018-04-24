@@ -1,0 +1,15 @@
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+                  // "Class-Path": '. config/'
+                  )
+    }
+//    exclude('config/')
+}

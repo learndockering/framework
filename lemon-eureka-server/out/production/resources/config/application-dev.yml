@@ -1,0 +1,9 @@
+eureka :
+  enviroment : DEV
+  client :
+    register-with-eureka : true
+    fetch-registry : true
+    serviceUrl :
+      defaultZone : http://127.0.0.1:9002/eureka/
+  server :
+    enable-self-preservation : true

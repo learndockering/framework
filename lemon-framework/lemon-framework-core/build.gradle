@@ -1,0 +1,22 @@
+dependencies {
+    compile project(":lemon-framework:lemon-framework-common")
+    compile project(":lemon-framework:lemon-framework-log")
+    compile project(":lemon-framework:lemon-framework-idgen")
+    compile project(":lemon-framework:lemon-framework-feign")
+    compile project(":lemon-framework:lemon-framework-validation")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile("org.springframework.boot:spring-boot-starter-aop")
+    compile("org.springframework:spring-webmvc")
+    optional("javax.servlet:javax.servlet-api")
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+                  // "Class-Path": '. config/'
+                  )
+    }
+//    exclude('config/')
+}

@@ -1,0 +1,15 @@
+dependencies {
+    compile project(":lemon-common")
+    compile('javax.validation:validation-api')
+}
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+                  // "Class-Path": '. config/'
+                  )
+    }
+//    exclude('config/')
+}

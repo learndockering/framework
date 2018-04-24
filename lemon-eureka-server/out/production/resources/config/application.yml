@@ -1,0 +1,10 @@
+eureka :
+  client :
+    register-with-eureka : false
+    fetch-registry : false
+    serviceUrl :
+      defaultZone : http://localhost:${server.port}/eureka/
+  server :
+    enable-self-preservation : false
+  instance :
+    preferIpAddress : true

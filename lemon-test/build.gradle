@@ -1,0 +1,55 @@
+apply plugin: 'application'
+
+dependencies {
+    compile("com.hisun:lemon-prd-interface:1.0.0-SNAPSHOT")
+    compile project(":lemon-swagger")
+    compile project(":lemon-framework")
+    compile project(":lemon-framework:lemon-framework-cumulative")
+    compile project(":lemon-framework:lemon-framework-lock")
+    compile("com.hisun:channel-integration-starter:1.0.1-SNAPSHOT")
+    compile("com.hisun:channel-cmsb:1.0.1-SNAPSHOT")
+    compile("com.hisun:channel-cgb:1.0.1-SNAPSHOT")
+    //compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+}
+
+mainClassName = 'com.hisun.lemon.Application'
+
+jar {
+    manifest {
+        attributes(
+                   "Implementation-Title": "Gradle",
+                   "Implementation-Version": "${version}",
+                   "Class-Path": '. config/'
+                  )
+    }
+//    exclude('config/')
+}
+
+bootRepackage {
+    enabled = true
+    mainClass = 'com.hisun.lemon.Application'
+}
+
+task clearTarget(type:Delete){  
+   delete 'build/target'  
+}  
+
+task release(type: Copy,dependsOn: [clearTarget,build]) {  
+    from('build/libs') {  
+        include '*.jar'
+        exclude '*-sources.jar'  
+    }  
+//    from('src/main/resources') {
+//        include 'config/*'
+//    }
+    into ('build/target') 
+    
+    into('bin') {
+        from 'shell'
+    } 
+} 
+
+task dist(type: Zip,dependsOn: [release]) {  
+    from ('build/target/') {
+    } 
+}
